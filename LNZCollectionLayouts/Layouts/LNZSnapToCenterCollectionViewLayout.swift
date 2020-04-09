@@ -95,7 +95,7 @@ open class LNZSnapToCenterCollectionViewLayout: UICollectionViewLayout, FocusedC
      This delegate will be called every time the element currently in focus changes.
      - seeAlso: FocusChangeDelegate
      */
-    public weak var focusChangeDelegate: FocusChangeDelegate?
+    @IBOutlet public weak var focusChangeDelegate: FocusChangeDelegate?
     
     //MARK: - Cached properties
     internal var itemCount: Int?

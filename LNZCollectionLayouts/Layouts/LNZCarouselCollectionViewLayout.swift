@@ -47,7 +47,7 @@ open class LNZCarouselCollectionViewLayout: LNZInfiniteCollectionViewLayout {
     ///to the distance of its center to the collection's center.
     @IBInspectable public var minimumScaleFactor: CGFloat = 0.85
 
-    @IBInspectable public weak var carouselDelegate: CarouselDelegate?
+    @IBOutlet public weak var carouselDelegate: CarouselDelegate?
 
     // MARK: - Utility properties
 
