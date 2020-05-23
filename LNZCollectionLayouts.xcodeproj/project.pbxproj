@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		30AE0F71247BD81E0051B0CF /* EqualSpacingCarouselViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AE0F70247BD81D0051B0CF /* EqualSpacingCarouselViewController.swift */; };
 		500D6EFE1F1E1CFD00FE20D4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 500D6EFD1F1E1CFD00FE20D4 /* AppDelegate.swift */; };
 		500D6F001F1E1CFD00FE20D4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 500D6EFF1F1E1CFD00FE20D4 /* ViewController.swift */; };
 		500D6F031F1E1CFD00FE20D4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 500D6F011F1E1CFD00FE20D4 /* Main.storyboard */; };
@@ -21,9 +22,11 @@
 		5025EE931F43070A001521F6 /* SafariViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5025EE921F43070A001521F6 /* SafariViewController.swift */; };
 		50377DA41F574FFB00A567D6 /* LNZSnapToCenterCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 500D6F141F1E3D7000FE20D4 /* LNZSnapToCenterCollectionViewLayout.swift */; };
 		508E11771F5D585200895B7D /* UICollectionViewDelegateSafariLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 508E11761F5D585200895B7D /* UICollectionViewDelegateSafariLayout.swift */; };
+		FBE5A9062479637300B1D684 /* LNZEqualSpacingCarouselLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE5A9052479637300B1D684 /* LNZEqualSpacingCarouselLayout.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		30AE0F70247BD81D0051B0CF /* EqualSpacingCarouselViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EqualSpacingCarouselViewController.swift; sourceTree = "<group>"; };
 		500BC39321E8AD4C00BA39F2 /* LNZCollectionLayouts.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LNZCollectionLayouts.podspec; sourceTree = "<group>"; };
 		500D6EFA1F1E1CFD00FE20D4 /* LNZCollectionLayouts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LNZCollectionLayouts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		500D6EFD1F1E1CFD00FE20D4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -41,6 +44,7 @@
 		5025EE8E1F42EA6C001521F6 /* LNZSafariTabLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LNZSafariTabLayout.swift; sourceTree = "<group>"; };
 		5025EE921F43070A001521F6 /* SafariViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SafariViewController.swift; sourceTree = "<group>"; };
 		508E11761F5D585200895B7D /* UICollectionViewDelegateSafariLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UICollectionViewDelegateSafariLayout.swift; sourceTree = "<group>"; };
+		FBE5A9052479637300B1D684 /* LNZEqualSpacingCarouselLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LNZEqualSpacingCarouselLayout.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +84,7 @@
 				500D6F121F1E32B000FE20D4 /* CollectionViewController.swift */,
 				5025EE921F43070A001521F6 /* SafariViewController.swift */,
 				501CF9F41FC0AEC3003CAC14 /* SafariModalViewController.swift */,
+				30AE0F70247BD81D0051B0CF /* EqualSpacingCarouselViewController.swift */,
 				500D6F011F1E1CFD00FE20D4 /* Main.storyboard */,
 				500D6F041F1E1CFD00FE20D4 /* Assets.xcassets */,
 				500D6F061F1E1CFD00FE20D4 /* LaunchScreen.storyboard */,
@@ -97,6 +102,7 @@
 				500D6F101F1E1D3D00FE20D4 /* LNZInfiniteCollectionViewLayout.swift */,
 				500D6F161F1E6E0000FE20D4 /* LNZCarouselCollectionViewLayout.swift */,
 				5025EE8E1F42EA6C001521F6 /* LNZSafariTabLayout.swift */,
+				FBE5A9052479637300B1D684 /* LNZEqualSpacingCarouselLayout.swift */,
 			);
 			path = Layouts;
 			sourceTree = "<group>";
@@ -160,6 +166,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -192,8 +199,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				500D6F131F1E32B000FE20D4 /* CollectionViewController.swift in Sources */,
+				30AE0F71247BD81E0051B0CF /* EqualSpacingCarouselViewController.swift in Sources */,
 				501CF9F51FC0AEC3003CAC14 /* SafariModalViewController.swift in Sources */,
 				500D6F001F1E1CFD00FE20D4 /* ViewController.swift in Sources */,
+				FBE5A9062479637300B1D684 /* LNZEqualSpacingCarouselLayout.swift in Sources */,
 				5025EE931F43070A001521F6 /* SafariViewController.swift in Sources */,
 				508E11771F5D585200895B7D /* UICollectionViewDelegateSafariLayout.swift in Sources */,
 				50377DA41F574FFB00A567D6 /* LNZSnapToCenterCollectionViewLayout.swift in Sources */,
@@ -344,7 +353,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = ZJ8CN8P2Z5;
 				INFOPLIST_FILE = LNZCollectionLayouts/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.gilt.LNZCollectionLayouts;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -358,7 +367,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = ZJ8CN8P2Z5;
 				INFOPLIST_FILE = LNZCollectionLayouts/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.gilt.LNZCollectionLayouts;
 				PRODUCT_NAME = "$(TARGET_NAME)";

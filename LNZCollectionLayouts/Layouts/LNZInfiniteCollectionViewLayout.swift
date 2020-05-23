@@ -85,7 +85,7 @@ open class LNZInfiniteCollectionViewLayout: LNZSnapToCenterCollectionViewLayout 
         
         guard let itemCount = itemCount, cycleSize == nil else { return }
         
-        let width = (itemSize.width + interitemSpacing) * CGFloat(itemCount)
+        let width = (itemSize.width + interItemSpacing) * CGFloat(itemCount)
         let height = itemSize.height
         
         cycleSize = CGSize(width: width, height: height)
@@ -144,11 +144,11 @@ open class LNZInfiniteCollectionViewLayout: LNZSnapToCenterCollectionViewLayout 
             let relativInitialX = currentX - cycleFrame.origin.x
             let relativeFinalX = min(cycleFrame.maxX, rect.maxX) - cycleFrame.origin.x
             
-            let firstIndex = Int(floor(relativInitialX/(itemSize.width + interitemSpacing)))
-            let lastIndex = min(Int(floor(relativeFinalX/(itemSize.width + interitemSpacing))), itemCount-1)
+            let firstIndex = Int(floor(relativInitialX/(itemSize.width + interItemSpacing)))
+            let lastIndex = min(Int(floor(relativeFinalX/(itemSize.width + interItemSpacing))), itemCount-1)
             
             for j in firstIndex...lastIndex {
-                let x = cycleFrame.origin.x + (itemSize.width + interitemSpacing) * CGFloat(j)
+                let x = cycleFrame.origin.x + (itemSize.width + interItemSpacing) * CGFloat(j)
                 let y = sectionInsetTop + (headerHeight ?? 0)
                 
                 indexPaths.append((
@@ -203,7 +203,7 @@ open class LNZInfiniteCollectionViewLayout: LNZSnapToCenterCollectionViewLayout 
             let iLastCycle = Int(floor((currentRect.maxX - cycleStart) / cycleSize.width))
             let cycleFrame = frameForCycle(at: iLastCycle)
             
-            let x = cycleFrame.origin.x + (itemSize.width + interitemSpacing) * CGFloat(indexPath.item)
+            let x = cycleFrame.origin.x + (itemSize.width + interItemSpacing) * CGFloat(indexPath.item)
             let y = sectionInsetTop
             
             frame = CGRect(origin: CGPoint(x: x, y: y), size: itemSize)

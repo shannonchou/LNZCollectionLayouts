@@ -45,7 +45,7 @@ open class LNZSnapToCenterCollectionViewLayout: UICollectionViewLayout, FocusedC
     //MARK: - Inspectable properties
     
     ///The spacing between consecutive items
-    @IBInspectable public var interitemSpacing: CGFloat = 8
+    @IBInspectable public var interItemSpacing: CGFloat = 8
     
     ///The space between the items and the top border of the collection view
     @IBInspectable public var sectionInsetTop: CGFloat = 8
@@ -148,7 +148,7 @@ open class LNZSnapToCenterCollectionViewLayout: UICollectionViewLayout, FocusedC
             footerHeight = delegate?.collectionView?(collection, layout: self, referenceSizeForFooterInSection: 0).height ?? 0
         }
         //This method is always called right after the prepare method, so at this point sectionInsetLeft + sectionInsetRight is already determined
-        let w: CGFloat = sectionInsetLeft + sectionInsetRight - interitemSpacing + (itemSize.width + interitemSpacing) * CGFloat(itemCount ?? 0)
+        let w: CGFloat = sectionInsetLeft + sectionInsetRight - interItemSpacing + (itemSize.width + interItemSpacing) * CGFloat(itemCount ?? 0)
         let h: CGFloat = CGFloat(headerHeight ?? 0.0) + sectionInsetTop + sectionInsetBottom + itemSize.height + CGFloat(footerHeight ?? 0.0)
         
         return CGSize(width: w, height: h)
@@ -185,8 +185,8 @@ open class LNZSnapToCenterCollectionViewLayout: UICollectionViewLayout, FocusedC
     ///- returns: An array of tuples, where the first element represents the indexPath of the element, and the second is its rame.
     internal func items(in rect: CGRect) -> [(index:IndexPath, frame: CGRect)] {
         guard let itemCount = itemCount else { return [] }
-        let firstIndex = max(Int(floor((rect.origin.x - sectionInsetLeft) / (itemSize.width + interitemSpacing))), 0)
-        let lastIndex = min(Int(floor((rect.maxX - sectionInsetLeft) / (itemSize.width + interitemSpacing))), itemCount - 1)
+        let firstIndex = max(Int(floor((rect.origin.x - sectionInsetLeft) / (itemSize.width + interItemSpacing))), 0)
+        let lastIndex = min(Int(floor((rect.maxX - sectionInsetLeft) / (itemSize.width + interItemSpacing))), itemCount - 1)
         
         var result = [(index:IndexPath, frame: CGRect)]()
         guard firstIndex <= lastIndex else { return result }
@@ -206,7 +206,7 @@ open class LNZSnapToCenterCollectionViewLayout: UICollectionViewLayout, FocusedC
     ///- warning: The item might not exist. This method performs no check around item counts and item existence. Using pure math, it computes the position
     ///and the hypotetical size of the item. It is developer's responsibility to ask for item that actually exists in their collection.
     internal func frameForItem(at indexPath: IndexPath) -> CGRect {
-        let x = sectionInsetLeft + (itemSize.width + interitemSpacing) * CGFloat(indexPath.item)
+        let x = sectionInsetLeft + (itemSize.width + interItemSpacing) * CGFloat(indexPath.item)
         let y = (headerHeight ?? 0) + sectionInsetTop
         
         return CGRect(origin: CGPoint(x: x, y: y), size: itemSize)
@@ -315,7 +315,7 @@ open class LNZSnapToCenterCollectionViewLayout: UICollectionViewLayout, FocusedC
         if (velocity.x < 0 && offset > 0) || (velocity.x > 0 && offset < 0) {
             //If the velocity of scroll tends to superate the element to go to the next item, or the previous, we correct the new offset by adding or removing 
             //the width of the "page"
-            let pageWidth = itemSize.width + interitemSpacing
+            let pageWidth = itemSize.width + interItemSpacing
             newOffsetX += velocity.x > 0 ? pageWidth : -pageWidth
         }
         
