@@ -124,13 +124,17 @@ open class LNZSnapToCenterCollectionViewLayout: UICollectionViewLayout, FocusedC
         //the collectionView as we know that there are no changes.
         if itemCount == nil {
             let sections = collection.dataSource?.numberOfSections?(in: collection) ?? 0
+            
             guard sections < 2 else {
                 //This collection view layout can handle just one section.
                 fatalError("\(self) is a collection View Layout that just supports one section")
             }
-
             
-            itemCount = collection.dataSource?.collectionView(collection, numberOfItemsInSection: 0) ?? 0
+            if sections > 0 {
+                itemCount = collection.dataSource?.collectionView(collection, numberOfItemsInSection: 0) ?? 0
+            } else {
+                itemCount = 0
+            }
         }
         
         //To compute the height we need to know if there are heders and footers.
