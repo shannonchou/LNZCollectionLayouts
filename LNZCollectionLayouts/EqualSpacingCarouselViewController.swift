@@ -20,6 +20,11 @@ class EqualSpacingCarouselViewController: UIViewController {
 }
 
 extension EqualSpacingCarouselViewController: UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate {
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 15
     }
@@ -35,7 +40,7 @@ extension EqualSpacingCarouselViewController: UICollectionViewDelegate, UICollec
 
         return cell
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == equalCollectionView {
             let layout = collectionView.collectionViewLayout as? LNZEqualSpacingCarouselLayout
@@ -46,7 +51,6 @@ extension EqualSpacingCarouselViewController: UICollectionViewDelegate, UICollec
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        print("scrollViewDidScroll : \(scrollView.contentOffset)")
         let another = collectionViews.filter { $0 != scrollView }
         another.first?.contentOffset = scrollView.contentOffset
     }

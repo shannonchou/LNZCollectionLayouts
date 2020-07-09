@@ -7,6 +7,7 @@
 
 import UIKit
 
+@IBDesignable @objcMembers
 open class LNZEqualSpacingCarouselLayout: LNZSnapToCenterCollectionViewLayout {
 
     // MARK: - Inspectable properties
@@ -17,8 +18,9 @@ open class LNZEqualSpacingCarouselLayout: LNZSnapToCenterCollectionViewLayout {
     /// |item.center - collection.center| >= *scalingOffset*
     @IBInspectable public var scalingOffset: CGFloat = 80
     @IBInspectable public var zoomInItemSize: CGSize = CGSize(width: 75, height: 75)
-
     @IBInspectable public var zoomInInterItemSpacing: CGFloat = 8
+    @IBOutlet public weak var carouselDelegate: CarouselDelegate?
+    public var decelerationRate: UIScrollView.DecelerationRate = .fast
 
     // MARK: - Utility properties
 
@@ -52,10 +54,10 @@ open class LNZEqualSpacingCarouselLayout: LNZSnapToCenterCollectionViewLayout {
     // MARK: Preparation
 
     open override func prepare() {
-        print("prepare")
         super.prepare()
         itemWidthWithSpacing = itemSize.width + interItemSpacing
         cachedAttributes.removeAll()
+        collectionView?.decelerationRate = decelerationRate
     }
 
     // MARK: Layouting and attributes generators
@@ -63,7 +65,6 @@ open class LNZEqualSpacingCarouselLayout: LNZSnapToCenterCollectionViewLayout {
     private func configureAttributes(for attributes: UICollectionViewLayoutAttributes) {
         guard let collection = collectionView, cachedAttributes[attributes.indexPath] == nil else { return }
         let currentCellIndex = centerCellIndex()
-        print("configureAttributes  \(attributes.indexPath.row)   currentCenter: \(currentCellIndex)")
         let contentOffset = collection.contentOffset
         let collectionViewSize = collection.bounds.size
         let visibleRect = CGRect(x: contentOffset.x, y: contentOffset.y, width: collectionViewSize.width, height: collectionViewSize.height)
@@ -75,45 +76,49 @@ open class LNZEqualSpacingCarouselLayout: LNZSnapToCenterCollectionViewLayout {
         let progress = 1 - absDistanceFromCenter / scalingOffset
         let itemSizeZoomed = zoomedItemSize(of: progress)
         let interSpacingZoomed = zoomedInterSpacing(of: progress)
-
+        let abstractFrame = frameForItem(at: attributes.indexPath)
+        attributes.center = CGPoint(x: abstractFrame.midX, y: abstractFrame.midY)
+        attributes.size = abstractFrame.size
+        let targetFrame: CGRect
         if currentCellIndex == attributes.indexPath {
             let relative = relativeDisplacement(at: currentCellIndex.row, offset: contentOffset.x)
-            let frame = CGRect(x: collection.frame.size.width / 2 + contentOffset.x - itemSizeZoomed.width * relative -
+            targetFrame = CGRect(x: collection.frame.size.width / 2 + contentOffset.x - itemSizeZoomed.width * relative -
                 (interSpacingZoomed * relative - interSpacingZoomed / 2),
                 y: (collectionViewSize.height - itemSizeZoomed.height) / 2,
                 width: itemSizeZoomed.width,
                 height: itemSizeZoomed.height)
-            print("index \(currentCellIndex)   relative: \(relative) frame: \(frame)")
-            attributes.frame = frame
         } else if currentCellIndex > attributes.indexPath { // left cells
             let neighborIndex = attributes.indexPath.next()
             guard let (neighbor, _, neighborSpacing) = cachedAttributes[neighborIndex] ?? {
                 _ = layoutAttributesForItem(at: neighborIndex)
                 return cachedAttributes[neighborIndex]
             }() else { return }
-            let frame = CGRect(x: neighbor.frame.minX - neighborSpacing / 2 - interSpacingZoomed / 2 - itemSizeZoomed.width,
-                               y: (collectionViewSize.height - itemSizeZoomed.height) / 2,
-                               width: itemSizeZoomed.width,
-                               height: itemSizeZoomed.height)
-            attributes.frame = frame
+            let neighborTargetFrame = neighbor.frame
+            targetFrame = CGRect(x: neighborTargetFrame.minX - neighborSpacing / 2 - interSpacingZoomed / 2 - itemSizeZoomed.width,
+                                 y: (collectionViewSize.height - itemSizeZoomed.height) / 2,
+                                 width: itemSizeZoomed.width,
+                                 height: itemSizeZoomed.height)
         } else { // right cells
             let neighborIndex = attributes.indexPath.previous()
             guard let (neighbor, _, neighborSpacing) = cachedAttributes[neighborIndex] ?? {
                 _ = layoutAttributesForItem(at: neighborIndex)
                 return cachedAttributes[neighborIndex]
             }() else { return }
-            let frame = CGRect(x: neighbor.frame.maxX + neighborSpacing / 2 + interSpacingZoomed / 2,
-                               y: (collectionViewSize.height - itemSizeZoomed.height) / 2,
-                               width: itemSizeZoomed.width,
-                               height: itemSizeZoomed.height)
-            attributes.frame = frame
+            let neighborTargetFrame = neighbor.frame
+            targetFrame = CGRect(x: neighborTargetFrame.maxX + neighborSpacing / 2 + interSpacingZoomed / 2,
+                                 y: (collectionViewSize.height - itemSizeZoomed.height) / 2,
+                                 width: itemSizeZoomed.width,
+                                 height: itemSizeZoomed.height)
         }
+        let scaleTrans = CGAffineTransform(scaleX: targetFrame.width / abstractFrame.width, y: targetFrame.height / abstractFrame.height)
+        let transTans = CGAffineTransform(translationX: targetFrame.midX - abstractFrame.midX, y: targetFrame.midY - abstractFrame.midY)
+        attributes.transform = scaleTrans.concatenating(transTans)
         cachedAttributes[attributes.indexPath] = (attributes, progress, interSpacingZoomed)
-
         // All the elements that are smaller are not in focus, therefore they should have a smaller zIndex so that if
         //they will overlap accordingly to the perspective in case of a negative value for the *minimumLineSpacing*
         // property.
         attributes.zIndex = Int(progress * 100000)
+        carouselDelegate?.carouselContainer?(self, didLayoutAttributes: attributes)
     }
 
     open override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
@@ -135,14 +140,14 @@ open class LNZEqualSpacingCarouselLayout: LNZSnapToCenterCollectionViewLayout {
         configureAttributes(for: attribute)
         return attribute
     }
-    
+
     public func scrollToItem(at indexPath: IndexPath) {
         let offset = itemWidthWithSpacing * CGFloat(indexPath.row)
         collectionView?.setContentOffset(CGPoint(x: offset, y: 0), animated: true)
     }
 }
 
-extension CGSize {
+fileprivate extension CGSize {
 
     static func * (lhs: CGSize, scalar: CGFloat) -> CGSize {
         return CGSize(width: lhs.width * scalar, height: lhs.height * scalar)
@@ -157,7 +162,7 @@ extension CGSize {
     }
 }
 
-extension IndexPath {
+fileprivate extension IndexPath {
 
     func previous() -> IndexPath {
         return IndexPath(row: row - 1, section: section)

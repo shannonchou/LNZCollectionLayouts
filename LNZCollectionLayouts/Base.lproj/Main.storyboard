@@ -359,14 +359,18 @@
                                 </constraints>
                                 <collectionViewLayout key="collectionViewLayout" id="UFH-O3-BA4" customClass="LNZEqualSpacingCarouselLayout" customModule="LNZCollectionLayouts" customModuleProvider="target">
                                     <userDefinedRuntimeAttributes>
-                                        <userDefinedRuntimeAttribute type="boolean" keyPath="isInfiniteScrollEnabled" value="NO"/>
-                                        <userDefinedRuntimeAttribute type="boolean" keyPath="snapToCenter" value="YES"/>
                                         <userDefinedRuntimeAttribute type="size" keyPath="itemSize">
                                             <size key="value" width="50" height="50"/>
                                         </userDefinedRuntimeAttribute>
                                         <userDefinedRuntimeAttribute type="boolean" keyPath="centerFirstItem" value="YES"/>
                                         <userDefinedRuntimeAttribute type="size" keyPath="zoomInItemSize">
                                             <size key="value" width="70" height="70"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="zoomInInterItemSpacing">
+                                            <real key="value" value="8"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="interItemSpacing">
+                                            <real key="value" value="8"/>
                                         </userDefinedRuntimeAttribute>
                                     </userDefinedRuntimeAttributes>
                                 </collectionViewLayout>
@@ -395,8 +399,8 @@
                                     </collectionViewCell>
                                 </cells>
                                 <connections>
-                                    <outlet property="dataSource" destination="yBK-jM-OSB" id="kVW-UE-SeP"/>
-                                    <outlet property="delegate" destination="yBK-jM-OSB" id="1H0-cV-dMU"/>
+                                    <outlet property="dataSource" destination="yBK-jM-OSB" id="hVO-mK-uN1"/>
+                                    <outlet property="delegate" destination="yBK-jM-OSB" id="rHI-J5-KUk"/>
                                 </connections>
                             </collectionView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="tme-Zs-hIG">
@@ -408,16 +412,8 @@
                                 </constraints>
                                 <collectionViewLayout key="collectionViewLayout" id="bnp-08-NWW" customClass="LNZSnapToCenterCollectionViewLayout" customModule="LNZCollectionLayouts" customModuleProvider="target">
                                     <userDefinedRuntimeAttributes>
-                                        <userDefinedRuntimeAttribute type="boolean" keyPath="isInfiniteScrollEnabled" value="NO"/>
-                                        <userDefinedRuntimeAttribute type="boolean" keyPath="snapToCenter" value="YES"/>
                                         <userDefinedRuntimeAttribute type="size" keyPath="itemSize">
                                             <size key="value" width="50" height="50"/>
-                                        </userDefinedRuntimeAttribute>
-                                        <userDefinedRuntimeAttribute type="number" keyPath="scalingOffset">
-                                            <real key="value" value="80"/>
-                                        </userDefinedRuntimeAttribute>
-                                        <userDefinedRuntimeAttribute type="number" keyPath="zoomInInterItemSpacing">
-                                            <real key="value" value="20"/>
                                         </userDefinedRuntimeAttribute>
                                         <userDefinedRuntimeAttribute type="boolean" keyPath="centerFirstItem" value="YES"/>
                                     </userDefinedRuntimeAttributes>
@@ -447,8 +443,8 @@
                                     </collectionViewCell>
                                 </cells>
                                 <connections>
-                                    <outlet property="dataSource" destination="yBK-jM-OSB" id="P9Y-hz-kKd"/>
-                                    <outlet property="delegate" destination="yBK-jM-OSB" id="EYZ-je-qZ3"/>
+                                    <outlet property="dataSource" destination="yBK-jM-OSB" id="Pii-jI-DMW"/>
+                                    <outlet property="delegate" destination="yBK-jM-OSB" id="nfM-2g-P6a"/>
                                 </connections>
                             </collectionView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hLV-Mp-XD8">

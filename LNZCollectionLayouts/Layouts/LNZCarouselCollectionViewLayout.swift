@@ -11,15 +11,12 @@ import UIKit
 /// This delegate is useful when you need to customize the scaling behavior.
 @objc public protocol CarouselDelegate: class {
     
-    /// This method will ask the delegate whether scale value should be apply to attributes. This mechanism allows developer to customize the scaling behavior.
+    /// This method will signal to the delegate that the attributes did layout.
     /// - Parameters:
     ///   - container: The object that is tracking the focused element
     ///   - attributes: Layout Attributes of a cell. You can find the cell by it's `indexPath` property.
-    ///   - scale: Scale value depends on the `minimumScaleFactor` you set.
-    /// - Returns: Should scale the cell. You can return `false` if you want to customize the scaling behavior.
     @objc optional func carouselContainer(_ container: FocusedContaining,
-                                          shouldScaleAttributes attributes: UICollectionViewLayoutAttributes,
-                                          toScale scale: CGFloat) -> Bool
+                                          didLayoutAttributes attributes: UICollectionViewLayoutAttributes)
 }
 
 /**
@@ -79,9 +76,8 @@ open class LNZCarouselCollectionViewLayout: LNZInfiniteCollectionViewLayout {
         //they will overlap accordingly to the perspective in case of a negative value for the *minimumLineSpacing*
         // property.
         attributes.zIndex = Int(scale * 100000)
-        if carouselDelegate?.carouselContainer?(self, shouldScaleAttributes: attributes, toScale: scale) ?? true {
-            attributes.transform3D = CATransform3DScale(CATransform3DIdentity, scale, scale, 1)
-        }
+        attributes.transform3D = CATransform3DScale(CATransform3DIdentity, scale, scale, 1)
+        carouselDelegate?.carouselContainer?(self, didLayoutAttributes: attributes)
     }
 
     open override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
