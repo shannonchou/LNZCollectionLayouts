@@ -52,10 +52,6 @@ class CollectionViewController: UICollectionViewController {
         collectionView.scrollToItem(at: indexPath, at: UICollectionView.ScrollPosition.centeredHorizontally, animated: true)
     }
     
-    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        super.scrollViewDidScroll(scrollView)
-        print("scrollViewDidScroll : \(scrollView.contentOffset)")
-    }
 }
 
 extension CollectionViewController: UICollectionViewDelegateFlowLayout {

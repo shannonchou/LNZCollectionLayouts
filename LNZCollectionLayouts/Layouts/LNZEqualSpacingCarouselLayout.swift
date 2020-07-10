@@ -2,11 +2,18 @@
 //  LNZEqualSpacingCarouselLayout.swift
 //  LNZCollectionLayouts
 //
-//  Created by 周俊 on 2020/5/23.
+//  Created by shannonchou on 2020/5/23.
 //
 
 import UIKit
 
+/**
+ The different between LNZEqualSpacingCarouselLayout and LNZCarouselCollectionViewLayout is that,
+ LNZEqualSpacingCarouselLayout can make inner spaces between cells be equal. Moreover, you can define a different space
+ beside the center cell.
+
+ This collectionView layout handles just one section without header and footer, and cells always be vertical centered.
+ */
 @IBDesignable @objcMembers
 open class LNZEqualSpacingCarouselLayout: LNZSnapToCenterCollectionViewLayout {
 
@@ -24,7 +31,7 @@ open class LNZEqualSpacingCarouselLayout: LNZSnapToCenterCollectionViewLayout {
 
     // MARK: - Utility properties
 
-    typealias LayoutAttributesZoomInfo = (attributes: UICollectionViewLayoutAttributes, progress: CGFloat, spacing: CGFloat)
+    typealias LayoutAttributesZoomInfo = (attributes: UICollectionViewLayoutAttributes, spacing: CGFloat)
     var cachedAttributes: [IndexPath: LayoutAttributesZoomInfo] = [:]
     var itemWidthWithSpacing: CGFloat = 1
 
@@ -62,9 +69,12 @@ open class LNZEqualSpacingCarouselLayout: LNZSnapToCenterCollectionViewLayout {
 
     // MARK: Layouting and attributes generators
 
+    /// When calculate a LayoutAttributes, recursively find a calculated neighbor LayoutAttributes which closer the
+    /// center one.
+    /// - Parameter attributes: attributes to be configurated
     private func configureAttributes(for attributes: UICollectionViewLayoutAttributes) {
         guard let collection = collectionView, cachedAttributes[attributes.indexPath] == nil else { return }
-        let currentCellIndex = centerCellIndex()
+        let centerIndex = centerCellIndex()
         let contentOffset = collection.contentOffset
         let collectionViewSize = collection.bounds.size
         let visibleRect = CGRect(x: contentOffset.x, y: contentOffset.y, width: collectionViewSize.width, height: collectionViewSize.height)
@@ -80,16 +90,16 @@ open class LNZEqualSpacingCarouselLayout: LNZSnapToCenterCollectionViewLayout {
         attributes.center = CGPoint(x: abstractFrame.midX, y: abstractFrame.midY)
         attributes.size = abstractFrame.size
         let targetFrame: CGRect
-        if currentCellIndex == attributes.indexPath {
-            let relative = relativeDisplacement(at: currentCellIndex.row, offset: contentOffset.x)
+        if centerIndex == attributes.indexPath {
+            let relative = relativeDisplacement(at: centerIndex.row, offset: contentOffset.x)
             targetFrame = CGRect(x: collection.frame.size.width / 2 + contentOffset.x - itemSizeZoomed.width * relative -
                 (interSpacingZoomed * relative - interSpacingZoomed / 2),
                 y: (collectionViewSize.height - itemSizeZoomed.height) / 2,
                 width: itemSizeZoomed.width,
                 height: itemSizeZoomed.height)
-        } else if currentCellIndex > attributes.indexPath { // left cells
+        } else if centerIndex > attributes.indexPath { // left cells
             let neighborIndex = attributes.indexPath.next()
-            guard let (neighbor, _, neighborSpacing) = cachedAttributes[neighborIndex] ?? {
+            guard let (neighbor, neighborSpacing) = cachedAttributes[neighborIndex] ?? {
                 _ = layoutAttributesForItem(at: neighborIndex)
                 return cachedAttributes[neighborIndex]
             }() else { return }
@@ -100,7 +110,7 @@ open class LNZEqualSpacingCarouselLayout: LNZSnapToCenterCollectionViewLayout {
                                  height: itemSizeZoomed.height)
         } else { // right cells
             let neighborIndex = attributes.indexPath.previous()
-            guard let (neighbor, _, neighborSpacing) = cachedAttributes[neighborIndex] ?? {
+            guard let (neighbor, neighborSpacing) = cachedAttributes[neighborIndex] ?? {
                 _ = layoutAttributesForItem(at: neighborIndex)
                 return cachedAttributes[neighborIndex]
             }() else { return }
@@ -111,9 +121,9 @@ open class LNZEqualSpacingCarouselLayout: LNZSnapToCenterCollectionViewLayout {
                                  height: itemSizeZoomed.height)
         }
         let scaleTrans = CGAffineTransform(scaleX: targetFrame.width / abstractFrame.width, y: targetFrame.height / abstractFrame.height)
-        let transTans = CGAffineTransform(translationX: targetFrame.midX - abstractFrame.midX, y: targetFrame.midY - abstractFrame.midY)
-        attributes.transform = scaleTrans.concatenating(transTans)
-        cachedAttributes[attributes.indexPath] = (attributes, progress, interSpacingZoomed)
+        let moveTans = CGAffineTransform(translationX: targetFrame.midX - abstractFrame.midX, y: targetFrame.midY - abstractFrame.midY)
+        attributes.transform = scaleTrans.concatenating(moveTans)
+        cachedAttributes[attributes.indexPath] = (attributes, interSpacingZoomed)
         // All the elements that are smaller are not in focus, therefore they should have a smaller zIndex so that if
         //they will overlap accordingly to the perspective in case of a negative value for the *minimumLineSpacing*
         // property.
